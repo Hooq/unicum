@@ -35,9 +35,10 @@ based on Docker and can be downloaded and ran in a minute or less.
 To start the server you can run the shell script `run.sh`.
 
 It will create 
-    1. a data container, `unicum_data`, based on *busybox*, 
-    2. a redis container, `unicum_redis`, based on *dokcerfile/redis*
-    3. the Unicum container, `unicum`, based on *node*, listening on the post `9691`
+
+1. a data container, `unicum_data`, based on *busybox*, 
+2. a redis container, `unicum_redis`, based on *dokcerfile/redis*
+3. the Unicum container, `unicum`, based on *node*, listening on the post `9691`
 
 
 ###`/generate/:type`
