@@ -1,15 +1,18 @@
-unicum_server
+Unicum
 =============
 
 A restful server for unique id generation
 
- 
+
 ## The key format
 
-Unicum uses integer in base 62 so that, for example, the key `2T4QmCrM03` is made up of 3 parts: `2T4QmC` `rM` `03`
+Unicum is based on Redis and uses integer in base 62 so that, for example, the key `2T4QmCrM03` is made up of 3 parts: 
+
+`2T4QmC` `rM` `03`
 
 
-`2T4QmC` is the difference between the current timestamp in milliseconds and the starting epoch (by default Jan. 1st 2012). 
+`2T0QmC` is the difference between the current timestamp in microseconds and the epoch when you initialize the server. 
+Specifically, the microseconds are in the last 4 digit `0QmC` and the seconds from the epoch are the rest `2T`.
 
 `rM` is a variance on the single shard, managed with a sequence.
 
@@ -18,203 +21,145 @@ Unicum uses integer in base 62 so that, for example, the key `2T4QmCrM03` is mad
 
 ## Why the keys are unique
 
-`Date.now()` produces the milliseconds from Jan. 1st, 1970.
-If our epoch starts at Jan. 1st 2012, our epoch is 1325404800000.
-Today, Jan. 19th 2012, the diff is
+Unicum uses Redis to generate the keys. First off, when you start the server for the first time, it takes the current timestamp and set the epoch (in seconds, like a Linux timestamp).
 
-    1327000287784 - 1325404800000 = 1595487784
-    
-So we have a good starting point.
-Since it is possible that you generate more keys in the same milliseconds, we need more data.
+In the following, when you generate a key, Unicum read the time in Redis and use the difference in seconds between the 
+current time and the epoch, and the microseconds in the following 4 digit.  
 
-First of all, we identify what _virtual shard_ will host that key with `1595487784 % N` (where N is the number of current nodes).
-After we use a sequence (Shardjs defines the special key `$equence` in Redis) in order to have a incremental unique number for that shard.
-
-Imagine that we have two keys of the same type 01 generated at the same millisecond in a shard of 64 nodes.
-The two keys will be assigned, with `1595487784 % 64` to the virtual node 40.
-
-If the sequence value at that time is, for example, 190, the partial first key will be
-
-	1595487784 190 01
-	
-the second, after incrementing the sequence, will be
-
-	1595487784 191 01
-	
-Converting these keys in base 62 we will obtain the final keys `1jyVFw3401` and `1jyVFw3501`.
-
-The advantage of this approach is that since all the keys generated at the same millisecond will go on the same virtual shard and there is the incremental sequence, 
-we can mantain the key well sorted by time. There is an exception when the variant is close to multiples of 3844 and we are in the same millisecond. For this reason, 
-even if it is probably very rare, Shardjs doesn't guarantee in-order delivery.
-
-But the key won't go on the virtual shard defined using mod operator, it is necessary only to decide what shard's sequence we need to use.
-
-## Consistent hashing
-
-Shardjs, after the first virtual sharding, define the real shard that will host the key using [node-hash-ring](https://github.com/bnoguchi/node-hash-ring) by [Brian Noguchi](https://github.com/bnoguchi). 
-
-The advantage of using consistent hashing is that if you have a database with 20 nodes and you add other 2 nodes, you will move only the 10% of the keys to the new nodes.
 
 ## Usage
 
-Before all, you have to install Class-js and HashRing using
+You can use unicum.js in a Node application, as a library, or, preferably, starting the Unicum server. This is
+based on Docker and can be downloaded and ran in a minute or less.
 
-    npm install class-js
-    npm install hash_ring
+To start the server you can run the shell script `run.sh`.
 
-### Require the module
+It will create 
+    1. a data container, `unicum_data`, based on *busybox*, 
+    2. a redis container, `unicum_redis`, based on *dokcerfile/redis*
+    3. the Unicum container, `unicum`, based on *node*, listening on the post `9691`
 
-    var Shard = require('./lib/shardjs-redis').init(shardjs-config);
 
-This is a sample of shard-config file, using 4 local instances of Redis, with a different weight (in real cases, this can be due to the available RAM):
+###`/generate/:type`
 
-	exports.config = {
-			
-		shards: {
-		    '0': ["63700", "127.0.0.1", 1],
-		    '1': ["63700", "127.0.0.2", 2],
-		    '2': ["63700", "127.0.0.3", 1],
-		    '3': ["63800", "127.0.0.4", 4]
-		},
-		
-	// you can set a database password if required
-	// it will be automatically used to connecting the database
-		auth: {
-			// userid: 'someuserid',
-			// password: 'somepassword'
-		},
+Generates a key of type `type`. For example `/generate/avatar` returns
+
+    {
+        "success": true,
+        "code": 200,
+        "key": "P7u1Xcq0204",
+        "type": "avatar"
+    }
+
+
+###`/convert/:existent_key/:new_type`
 	
-		options: {
+Generates 1 derivated key of type `new_type` from `existent_key`. For example `/convert/P7u1Xcq0204/user` returns
 	
-	// we use the $ to indicate keys with the same name along the shards
-			seqname: "$equence",
-			
-	// Jan. 1st, 2012		
-			epoch: 1325404800000,
-				
-			keyTypes: {
-				index: 0, // multiple hash key
-				sorted: 1, // sorted set key
-				user: 2,
-				group: 3,
-				comment: 4,
-				like: 5	
-			},
-		
-			specialKeys: {
-			/*	
-			 *  index: [timestamp,keytype]
-			 */	
-				users: [0,'index'], 
-				usernames: [1,'index'],
-				emails: [2,'index'],
-				groups: [3,'index'],
-				comments: [4,'index'],
-				likes: [5,'index'],
-				search: [6,'sorted']
-			},
-			
-			subKeys: {
-			  name: "n",
-			  city: "c",
-			  password: "p",
-			  userid: "u",
-			  email: "e"
-			  //...
-			}
-		}
-	};
-
-It will generate special keys like, in the third case `020000-emails`		
-		
-To generate a key:
-
-	Shard.genKey(Shard.keyTypes["users"],function (key) {
-		do_something(key);
-	});		
+	{
+        "success": true,
+        "code": 200,
+        "key": "P7u1Xcq0205",
+        "type": "user"
+    }
 	
-If you don't explicitly declare a key type Shardjs assumes that you use a default $DEF type, that has the numberic value 3843 (the bigger available).
+###`/info/:key`
+   
+Returns info about a key. For example `/info/P7u1Xcq0205` returns
 
-The command
-
-	Shard.getClient(key)
+    {
+        "success": true,
+        "code": 200,
+        "key": "P7u1Xcq0205",
+        "type": "user",
+        "date": "2014-11-16T07:27:15:14Z"
+    }
+    
+###`/time/:key`
+    
+Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205` returns
+    
+    {
+        "success": true,
+        "code": 200,
+        "key": "P7u1Xcq0205",
+        "time": 1416122835014
+    }
 	
-returns a redis client that supports all the Redis commands supported by [node-redis](https://github.com/mranney/node_redis/) by [Matt Ramney](https://github.com/mranney).
+###`/date/:key'
 
-So you can apply any redis command. For example, to save the key with a value:
+Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` returns
 
-	Shard.getClient(key).hset(key,'value');
+    {
+        "success": true,
+        "code": 200,
+        "key": "P7u1Xcq0205",
+        "date": "2014-11-16T07:27:15:14Z"
+    }
 	
-	// and to get a hashed key:
-
-	Shard.getClient(key).hget(key,callback);
+###`/fulltime/:key'
 	
-To know where a key is:
+Returns the time in seconds and microseconds of the key. For example `/fulltime/P7u1Xcq0205` returns
 
-	Shard.whereIs(key);
+    {
+        "success": true,
+        "code": 200,
+        "key": "P7u1Xcq0205",
+        "seconds": 1416122827,
+        "micros": 8014120
+    }
+    
+###`/epoch`    
 	
-To know on what virtual shard a key is (from 0.2.3 -- useful in tests):
+Return the epoch. For example, in our case:
+								
+    {
+        "success": true,
+        "code": 200,
+        "epoch": 1410134246
+    }	
+    							
+###`/export`
+    							
+Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. To avoid this 
+you should backup the unicum_data container using, for example, [Docker-backup](https://github.com/discordianfish/docker-backup)
 
-	Shard.whereIs(key,true);	
-
-To get the decimal string of a key:
-
-	Shard.toDecimalString(key);
-	
-To create a fixed key (for example the special keys in the shard-config file):
-
-	Shard.fixedKey(timestamp,variant,keytype,suffix);
-	
-To change the key type, for example to associate a token to a user:
-
-	Shard.changeKeyType(user_key,Shard.keyTypes.token);
-
-or
-
-	Shard.changeKeyType(user_key,'token');
-	
-Be careful, this requires that you have set a special key `token` in your shard-config file.
-
-Redis works in memory and it's good to reduce the memory consuption. If in your hashes you have long subkeys, 
-this can cause that you need more shards than expected. To help you to do this, you can use a dictionary to
-handle abbreviations. This means that, for example, if you instead of running
-
-	Shard.hset(key,{name:"John",city:"London"})
+A tipical response is like the following:
   
-you run
-
-	Shard.hset(key, Shard.minify({name:"John",city:"London"}))
-  
-you will save in the database an hash like this
-
-	n: John
-	c: London
-  
-If you have million users, it's simple to understand how much memory you can save.
-
-The only problem could be with performance. In that case, you can put the minified subkeys in line.
-
-The .maxify method is good to understand what a result is.
-
-Other useful method are `.getType` and `.getTime` to have info about the key.
-
-## All the dependencies
-
-Shardjs depends on:
-
-- [class-js](https://github.com/bnoguchi/class-js)
-- [node-hash-ring](https://github.com/bnoguchi/node-hash-ring)
-- [node-redis](https://github.com/mranney/node_redis/) (for Shardjs-redis)
+    {
+        "success": true,
+        "config": {
+            "epoch": 1410134246,
+            "codes": {
+                "user": 0,
+                "avatar": 1,
+                "post": "2",
+                "comment": "3"
+            }
+        }
+    }
 			
+###`/init?config=<escaped_config_object>`
+													
+Initialize with existent data a new Unicum server. This action will fail if the server is already configured.
+
+###`/restore/:secret?config=<escaped_config_object>`
+
+Forces the reconfiguration of the server. To reduce the risk, you need to use a secret that will be generated the first time you
+run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
+
+    docker run -ti --volumes-from unicum_data --name viewer sullof/unicum bash -c 'less /log/unicum.log'
+													
+													
 ## Credits
 
-Shardjs is (c) Francesco Sullo <me@sullof.com>
+Unicum is (c) Francesco Sullo <fs@hooq.co>
 
 ## License 
 
 (The MIT License)
 
-Copyright (c) 2012 Francesco Sullo <me@sullof.com>
+Copyright (c) 2014 Hooq <os@hooq.co>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

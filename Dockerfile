@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 # install your application's dependencies
 RUN npm install
 
-VOLUME ['/unicum/config','/unicum/log']
+VOLUME ['/log']
 
 # replace this with your application's default port
 EXPOSE 6961

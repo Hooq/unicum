@@ -3,6 +3,10 @@ var unicum = require("./unicum")
     , express = require('express')
     , app = express();
 
+global.logger = function (str) {
+    require('fs').appendFileSync('/log/unicum.log', str);
+}
+
 app.get('/generate/:type', function(req, res){
     unicum.generate(req.params.type, function (err, key) {
         console.log("err",err);

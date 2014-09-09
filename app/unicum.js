@@ -333,7 +333,7 @@ function Unicum() {
 
     redis.exists('epoch', function (err, exists) {
         if (!exists) {
-            console.log("Configuring Unicum.");
+            logger("Configuring Unicum.\n");
             // first time
             redis.time(function (err, time) {
                     epoch += parseInt(time[0], 10);
@@ -341,19 +341,19 @@ function Unicum() {
                     redis.set('epoch', epoch);
                     var secret = randomStr(24);
                     redis.set('secret', secret);
-                    console.log("Unicum server started on port 6961. Secret key: " + secret + ".");
+                    logger("Unicum server started on port 6961 at "+toISODate(Date.now())+".\nSecret key: " + secret + ".");
                 }
             )
         } else {
 
             function getSecret() {
                 redis.get('secret', function (err, secret) {
-                    console.log("Unicum server started on port 6961. Secret key: " + secret + ".");
+                    logger("Unicum server started on port 6961 at "+toISODate(Date.now())+".\nSecret key: " + secret + ".");
                 });
             }
 
             // other times
-            console.log("Loading Unicum configuration.");
+            logger("Loading Unicum configuration.\n");
             redis.get('epoch', function (err, epoch2) {
                 epoch += parseInt(epoch2, 10);
                 redis.exists('codes', function (err, exists2) {

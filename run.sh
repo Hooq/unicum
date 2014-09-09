@@ -14,7 +14,7 @@ if [ -z "$ID" ]; then
 docker run \
     --name unicum_data \
     -v /data \
-    -v /unicum/log \
+    -v /log \
     busybox \
     true
 fi
@@ -56,9 +56,10 @@ if [ ! -z "$1" ]; then
         --name unicum \
         --link unicum_redis:unicum_redis \
         --volumes-from unicum_data \
-        sullof/unicum node server.js
+        sullof/unicum bash start.sh
 else
     docker run -d \
+        -p 6961:6961 \
         --name unicum \
         --link unicum_redis:unicum_redis \
         --volumes-from unicum_data \
