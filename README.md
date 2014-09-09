@@ -55,7 +55,7 @@ The image hooq/unicum, has been built using the Dockerfile in this repository. I
 ## The API
 
 
-###`/generate/:type`
+#`/generate/:type`
 
 Generates a key of type `type`. For example `/generate/avatar` returns
 
