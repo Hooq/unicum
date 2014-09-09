@@ -101,6 +101,7 @@ Returns info about a key. For example `/info/P7u1Xcq0205` returns
         "date": "2014-11-16T07:27:15:14Z"
     }
     
+.    
     
 #####`/time/:key`
     
@@ -113,7 +114,7 @@ Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205
         "time": 1416122835014
     }
 	
-	
+.	
 	
 #####`/date/:key`
 
@@ -126,7 +127,7 @@ Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` retur
         "date": "2014-11-16T07:27:15:14Z"
     }
 	
-	
+.	
 	
 #####`/fulltime/:key`
 	
@@ -140,7 +141,7 @@ Returns the time in seconds and microseconds of the key. For example `/fulltime/
         "micros": 8014120
     }
     
-    
+.    
     
 #####`/epoch`    
 	
@@ -152,7 +153,7 @@ Return the epoch. For example, in our case:
         "epoch": 1410134246
     }	
     	
-    		
+.   		
     												
 #####`/export`
     							
@@ -175,13 +176,13 @@ A tipical response is like the following:
 
 In general, when you use pure data containers, you should backup them. Personally, I use [Docker-backup](https://github.com/discordianfish/docker-backup) for this.
 			
-	
+.	
 			
 #####`/init?config=<escaped_config_object>`
 													
 Initialize with existent data a new Unicum server. This action will fail if the server is already configured.
 
-
+.
 
 #####`/restore/:secret?config=<escaped_config_object>`
 
@@ -190,7 +191,7 @@ run the server. This secret is stored in the /log/unicum.log file. You can see t
 
     docker run -ti --volumes-from unicum_data busybox cat /log/unicum.log
 				
-																						
+.																						
 ## Checking the database
 																						
 You can check the database running a second Redis container with the script `run_redis_cli.sh` or executing
