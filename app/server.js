@@ -98,8 +98,8 @@ app.get('/convert/:key/:type', function(req, res){
     });
 });
 
-app.get('/import',function (req, res) {
-    unicum.import(JSON.parse(req.query.config), function (err) {
+app.get('/init',function (req, res) {
+    unicum.init(JSON.parse(req.query.config), function (err) {
         res.json({
             success: !err,
             message: err && err.message ? err.message : null

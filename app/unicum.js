@@ -182,7 +182,7 @@ function Unicum() {
         return null;
     };
 
-    function Import(config, cb) {
+    function init(config, cb) {
 
         redis.exists('epoch', function (err, exists) {
             if (!exists) {
@@ -326,13 +326,12 @@ function Unicum() {
         });
     };
 
-    this.import = Import;
+    this.init = init;
 
 
 // configuration
 
     redis.exists('epoch', function (err, exists) {
-        var thiz = this;
         if (!exists) {
             console.log("Configuring Unicum.");
             // first time

@@ -42,7 +42,6 @@ docker run -d \
     redis-server /etc/redis/redis.conf \
     --appendonly yes #--requirepass <password>
 
-
 # RUNNING THE UNICUM CONTAINER
 
 ID=$(docker inspect --format '{{ .Id }}' unicum 2> /dev/null)
