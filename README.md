@@ -104,7 +104,7 @@ Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205
     }
 	
 	
-###`/date/:key'
+###`/date/:key`
 
 Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` returns
 
@@ -116,7 +116,7 @@ Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` retur
     }
 	
 	
-###`/fulltime/:key'
+###`/fulltime/:key`
 	
 Returns the time in seconds and microseconds of the key. For example `/fulltime/P7u1Xcq0205` returns
 
@@ -183,11 +183,17 @@ You can check the database running a second Redis container with the script `run
         --link unicum_redis:unicum_redis \
         dockerfile/redis \
         bash -c 'redis-cli -h "$UNICUM_REDIS_PORT_6379_TCP_ADDR"'
-																						
+										
+
+																																		
+## Next step
+																																		
+Container linking via [Serf](http://www.serfdom.io).
+																																		
 													
 ## Credits
 
-Unicum is (c) Francesco Sullo <fs@hooq.co>
+Unicum has been developed by Francesco Sullo <fs@hooq.co>
 
 ## License 
 
