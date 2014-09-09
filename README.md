@@ -38,7 +38,7 @@ based on Docker and can be downloaded and ran in a minute or less.
 To start the server you can run the shell script `run.sh`. You can do it cloning this repository, or 
 executing the `run.sh` file directly from GitHub:
                                                                                                      
-    curl -sSL https://github.com/Hooq/unicum/blob/master/run.sh | sudo sh
+    curl -sSL https://raw.githubusercontent.com/Hooq/unicum/master/run.sh | sudo sh
 
 It will create 
 
