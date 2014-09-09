@@ -24,7 +24,10 @@ Specifically, the microseconds are in the last 4 digit `0QmC` and the seconds fr
 Unicum uses Redis to generate the keys. First off, when you start the server for the first time, it takes the current timestamp and set the epoch (in seconds, like a Linux timestamp).
 
 In the following, when you generate a key, Unicum read the time in Redis and use the difference in seconds between the 
-current time and the epoch, and the microseconds in the following 4 digit.  
+current time and the epoch, and the microseconds in the following 4 digit. It uses this as the first part of the key, adding a
+variant (to avoid keys in the same microseconds -- despite this is very unlikely) and 2 digit for the key type. 
+
+This way you key is a *talking key* that contains info about what it is and when it has been generated.
 
 
 ## Usage
