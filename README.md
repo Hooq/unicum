@@ -55,7 +55,7 @@ The image hooq/unicum, has been built using the Dockerfile in this repository. I
 ## The API
 
 
-#`/generate/:type`
+#####`/generate/:type`
 
 Generates a key of type `type`. For example `/generate/avatar` returns
 
@@ -67,7 +67,7 @@ Generates a key of type `type`. For example `/generate/avatar` returns
     }
 
 
-###`/convert/:existent_key/:new_type`
+#####`/convert/:existent_key/:new_type`
 	
 Generates 1 derivated key of type `new_type` from `existent_key`. For example `/convert/P7u1Xcq0204/user` returns
 	
@@ -79,7 +79,7 @@ Generates 1 derivated key of type `new_type` from `existent_key`. For example `/
     }
 	
 	
-###`/info/:key`
+#####`/info/:key`
    
 Returns info about a key. For example `/info/P7u1Xcq0205` returns
 
@@ -92,7 +92,7 @@ Returns info about a key. For example `/info/P7u1Xcq0205` returns
     }
     
     
-###`/time/:key`
+#####`/time/:key`
     
 Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205` returns
     
@@ -104,7 +104,7 @@ Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205
     }
 	
 	
-###`/date/:key`
+#####`/date/:key`
 
 Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` returns
 
@@ -116,7 +116,7 @@ Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` retur
     }
 	
 	
-###`/fulltime/:key`
+#####`/fulltime/:key`
 	
 Returns the time in seconds and microseconds of the key. For example `/fulltime/P7u1Xcq0205` returns
 
@@ -129,7 +129,7 @@ Returns the time in seconds and microseconds of the key. For example `/fulltime/
     }
     
     
-###`/epoch`    
+#####`/epoch`    
 	
 Return the epoch. For example, in our case:
 								
@@ -140,7 +140,7 @@ Return the epoch. For example, in our case:
     }	
     		
     												
-###`/export`
+#####`/export`
     							
 Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. To avoid this 
 you should backup the unicum_data container using, for example, [Docker-backup](https://github.com/discordianfish/docker-backup)
@@ -161,12 +161,12 @@ A tipical response is like the following:
     }
 			
 			
-###`/init?config=<escaped_config_object>`
+#####`/init?config=<escaped_config_object>`
 													
 Initialize with existent data a new Unicum server. This action will fail if the server is already configured.
 
 
-###`/restore/:secret?config=<escaped_config_object>`
+#####`/restore/:secret?config=<escaped_config_object>`
 
 Forces the reconfiguration of the server. To reduce the risk, you need to use a secret that will be generated the first time you
 run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
