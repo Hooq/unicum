@@ -53,6 +53,11 @@ To see the IP address of the Unicum server, you can execute
 
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' unicum
 
+If you call the Unicum server from inside other containers, the best way to connect them is to use a link. For example:
+
+    docker run -d --link unicum:unicum dockerfile/python
+
+
 
 ## The API
 
