@@ -47,9 +47,11 @@ It will create
 3. the Unicum container, `unicum`, based on [hooq/unicum](https://registry.hub.docker.com/u/hooq/unicum/), listening on the post `9691`
 
 The image hooq/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
-
     docker build -t <your_docker_username>/unicum .
 
+To see the IP address of the Unicum server, you can execute
+
+    docker inspect --format '{{ .NetworkSettings.IPAddress }}' unicum
 
 
 ## The API
