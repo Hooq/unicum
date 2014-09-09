@@ -35,10 +35,10 @@ This way you key is a *talking key* that contains info about what it is and when
 You can use unicum.js in a Node application, as a library, or, preferably, starting the Unicum server. This is
 based on Docker and can be downloaded and ran in a minute or less.
 
-To start the server you can run the shell script `run.sh`. You can do it cloning this repository, or 
-executing the `run.sh` file directly from GitHub:
+To install the server, Docker has to be installed on your server. If not, look at [http://docs.docker.com/installation/](http://docs.docker.com/installation/). To start the server, you can run the shell script `run.sh`, cloning this repository, or executing the `run.sh` file directly from GitHub:
                                                                                                      
     curl -sSL https://raw.githubusercontent.com/Hooq/unicum/master/run.sh | sudo sh
+
 
 It will create 
 
