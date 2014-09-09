@@ -1,25 +1,24 @@
-
 var unicum = require("./unicum")
     , express = require('express')
     , app = express();
 
 global.logger = function (str) {
-    require('fs').appendFileSync('/log/unicum.log', str);
+    require('fs').appendFileSync('/log/unicum.log', str + "\n");
 }
 
-app.get('/generate/:type', function(req, res){
+app.get('/generate/:type', function (req, res) {
     unicum.generate(req.params.type, function (err, key) {
-        console.log("err",err);
+        console.log("err", err);
         res.json({
             success: !err,
-            code: err ? 404: 200,
+            code: err ? 404 : 200,
             key: key,
             type: req.params.type
         })
     });
 });
 
-app.get('/generate/:type/:quantity', function(req, res){
+app.get('/generate/:type/:quantity', function (req, res) {
     unicum.generate(req.params.type, req.params.quantity, function (keys) {
         var good = Array.isArray(keys) && keys.length > 0;
         res.json({
@@ -31,7 +30,7 @@ app.get('/generate/:type/:quantity', function(req, res){
     });
 });
 
-app.get('/type/:key', function(req, res){
+app.get('/type/:key', function (req, res) {
     var type = unicum.getType(req.params.key);
     res.json({
         success: type ? true : false,
@@ -41,7 +40,7 @@ app.get('/type/:key', function(req, res){
     });
 });
 
-app.get('/time/:key', function(req, res){
+app.get('/time/:key', function (req, res) {
     var time = unicum.getTime(req.params.key);
     res.json({
         success: time ? true : false,
@@ -51,7 +50,7 @@ app.get('/time/:key', function(req, res){
     });
 });
 
-app.get('/fulltime/:key', function(req, res){
+app.get('/fulltime/:key', function (req, res) {
     var time = unicum.getFullTime(req.params.key);
     res.json({
         success: time ? true : false,
@@ -62,7 +61,7 @@ app.get('/fulltime/:key', function(req, res){
     });
 });
 
-app.get('/date/:key', function(req, res){
+app.get('/date/:key', function (req, res) {
     var time = unicum.getTime(req.params.key, true);
     res.json({
         success: time ? true : false,
@@ -72,7 +71,7 @@ app.get('/date/:key', function(req, res){
     });
 });
 
-app.get('/info/:key', function(req, res){
+app.get('/info/:key', function (req, res) {
     var info = unicum.getInfo(req.params.key);
     res.json({
         success: info ? true : false,
@@ -83,7 +82,7 @@ app.get('/info/:key', function(req, res){
     });
 });
 
-app.get('/epoch', function(req, res){
+app.get('/epoch', function (req, res) {
     res.json({
         success: true,
         code: 200,
@@ -91,7 +90,7 @@ app.get('/epoch', function(req, res){
     });
 });
 
-app.get('/convert/:key/:type', function(req, res){
+app.get('/convert/:key/:type', function (req, res) {
     unicum.convert(req.params.key, req.params.type, function (err, key) {
         res.json({
             success: !err,
@@ -102,7 +101,7 @@ app.get('/convert/:key/:type', function(req, res){
     });
 });
 
-app.get('/init',function (req, res) {
+app.get('/init', function (req, res) {
     unicum.init(JSON.parse(req.query.config), function (err) {
         res.json({
             success: !err,
@@ -111,7 +110,7 @@ app.get('/init',function (req, res) {
     })
 });
 
-app.get('/restore/:secret',function (req, res) {
+app.get('/restore/:secret', function (req, res) {
     unicum.restore(JSON.parse(req.query.config), req.params.secret, function (err) {
         res.json({
             success: !err,
@@ -129,12 +128,12 @@ app.get('/export', function (req, res) {
     })
 });
 
-app.get('/', function(req, res){
-    res.json({success:true, code: 200, message: 'Welcome to Unicum'});
+app.get('/', function (req, res) {
+    res.json({success: true, code: 200, message: 'Welcome to Unicum'});
 });
 
-app.get('*', function(req, res){
-    res.json({success:false, code: 404, message: 'Wrong api call.'});
+app.get('*', function (req, res) {
+    res.json({success: false, code: 404, message: 'Wrong api call.'});
 });
 
 app.listen(6961);

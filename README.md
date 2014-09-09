@@ -32,13 +32,24 @@ current time and the epoch, and the microseconds in the following 4 digit.
 You can use unicum.js in a Node application, as a library, or, preferably, starting the Unicum server. This is
 based on Docker and can be downloaded and ran in a minute or less.
 
-To start the server you can run the shell script `run.sh`.
+To start the server you can run the shell script `run.sh`. You can do it cloning this repository, or 
+executing the `run.sh` file directly from GitHub:
+                                                                                                     
+    curl -sSL https://github.com/Hooq/unicum/blob/master/run.sh | sudo sh
 
 It will create 
 
-1. a data container, `unicum_data`, based on *busybox*, 
-2. a redis container, `unicum_redis`, based on *dokcerfile/redis*
-3. the Unicum container, `unicum`, based on *node*, listening on the post `9691`
+1. a data container, `unicum_data`, based on [busybox](https://registry.hub.docker.com/_/busybox/), 
+2. a redis container, `unicum_redis`, based on [dockerfile/redis](https://registry.hub.docker.com/u/dockerfile/redis/)
+3. the Unicum container, `unicum`, based on [sullof/unicum](https://registry.hub.docker.com/u/sullof/unicum/), listening on the post `9691`
+
+The image sullof/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
+
+    docker build -t your_name/unicum .
+
+
+
+## The API
 
 
 ###`/generate/:type`
@@ -64,6 +75,7 @@ Generates 1 derivated key of type `new_type` from `existent_key`. For example `/
         "type": "user"
     }
 	
+	
 ###`/info/:key`
    
 Returns info about a key. For example `/info/P7u1Xcq0205` returns
@@ -76,6 +88,7 @@ Returns info about a key. For example `/info/P7u1Xcq0205` returns
         "date": "2014-11-16T07:27:15:14Z"
     }
     
+    
 ###`/time/:key`
     
 Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205` returns
@@ -87,6 +100,7 @@ Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205
         "time": 1416122835014
     }
 	
+	
 ###`/date/:key'
 
 Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` returns
@@ -97,6 +111,7 @@ Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` retur
         "key": "P7u1Xcq0205",
         "date": "2014-11-16T07:27:15:14Z"
     }
+	
 	
 ###`/fulltime/:key'
 	
@@ -110,6 +125,7 @@ Returns the time in seconds and microseconds of the key. For example `/fulltime/
         "micros": 8014120
     }
     
+    
 ###`/epoch`    
 	
 Return the epoch. For example, in our case:
@@ -119,7 +135,8 @@ Return the epoch. For example, in our case:
         "code": 200,
         "epoch": 1410134246
     }	
-    							
+    		
+    												
 ###`/export`
     							
 Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. To avoid this 
@@ -140,16 +157,18 @@ A tipical response is like the following:
         }
     }
 			
+			
 ###`/init?config=<escaped_config_object>`
 													
 Initialize with existent data a new Unicum server. This action will fail if the server is already configured.
+
 
 ###`/restore/:secret?config=<escaped_config_object>`
 
 Forces the reconfiguration of the server. To reduce the risk, you need to use a secret that will be generated the first time you
 run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
 
-    docker run -ti --volumes-from unicum_data --name viewer sullof/unicum bash -c 'less /log/unicum.log'
+    docker run -ti --volumes-from unicum_data busybox cat /log/unicum.log
 													
 													
 ## Credits

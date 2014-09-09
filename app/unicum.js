@@ -333,7 +333,7 @@ function Unicum() {
 
     redis.exists('epoch', function (err, exists) {
         if (!exists) {
-            logger("Configuring Unicum.\n");
+            logger("Configuring Unicum.");
             // first time
             redis.time(function (err, time) {
                     epoch += parseInt(time[0], 10);
@@ -353,7 +353,7 @@ function Unicum() {
             }
 
             // other times
-            logger("Loading Unicum configuration.\n");
+            logger("Loading Unicum configuration.");
             redis.get('epoch', function (err, epoch2) {
                 epoch += parseInt(epoch2, 10);
                 redis.exists('codes', function (err, exists2) {
