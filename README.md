@@ -62,6 +62,7 @@ If you call the Unicum server from inside other containers, the best way to conn
 ## The API
 
 
+
 #####`/generate/:type`
 
 Generates a key of type `type`. For example `/generate/avatar` returns
@@ -72,6 +73,7 @@ Generates a key of type `type`. For example `/generate/avatar` returns
         "key": "P7u1Xcq0204",
         "type": "avatar"
     }
+
 
 
 #####`/convert/:existent_key/:new_type`
@@ -111,6 +113,7 @@ Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205
     }
 	
 	
+	
 #####`/date/:key`
 
 Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` returns
@@ -121,6 +124,7 @@ Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` retur
         "key": "P7u1Xcq0205",
         "date": "2014-11-16T07:27:15:14Z"
     }
+	
 	
 	
 #####`/fulltime/:key`
@@ -136,6 +140,7 @@ Returns the time in seconds and microseconds of the key. For example `/fulltime/
     }
     
     
+    
 #####`/epoch`    
 	
 Return the epoch. For example, in our case:
@@ -145,6 +150,7 @@ Return the epoch. For example, in our case:
         "code": 200,
         "epoch": 1410134246
     }	
+    	
     		
     												
 #####`/export`
@@ -168,10 +174,12 @@ A tipical response is like the following:
 
 In general, when you use pure data containers, you should backup them. Personally, I use [Docker-backup](https://github.com/discordianfish/docker-backup) for this.
 			
+	
 			
 #####`/init?config=<escaped_config_object>`
 													
 Initialize with existent data a new Unicum server. This action will fail if the server is already configured.
+
 
 
 #####`/restore/:secret?config=<escaped_config_object>`
