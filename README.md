@@ -61,7 +61,7 @@ If you call the Unicum server from inside other containers, the best way to conn
 
 ## The API
 
-
+.
 
 #####`/generate/:type`
 
@@ -74,7 +74,7 @@ Generates a key of type `type`. For example `/generate/avatar` returns
         "type": "avatar"
     }
 
-
+.
 
 #####`/convert/:existent_key/:new_type`
 	
@@ -86,7 +86,8 @@ Generates 1 derivated key of type `new_type` from `existent_key`. For example `/
         "key": "P7u1Xcq0205",
         "type": "user"
     }
-	
+
+.	
 	
 #####`/info/:key`
    
