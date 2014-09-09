@@ -51,7 +51,6 @@ if [ ! -z "$ID" ]; then
 fi
 
 sudo docker run -d \
-    -p 6961:6961 \
     --name unicum \
     --link unicum_redis:unicum_redis \
     --volumes-from unicum_data \
