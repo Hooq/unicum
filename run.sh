@@ -55,7 +55,7 @@ sudo docker run -d \
     --name unicum \
     --link unicum_redis:unicum_redis \
     --volumes-from unicum_data \
-    sullof/unicum
+    hooq/unicum
 
 # If you are using a password for redis, you have to communicate this to the unicum server
 # in the variable $PASSWORD. For example you can do this adding the line

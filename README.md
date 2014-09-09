@@ -44,11 +44,11 @@ It will create
 
 1. a data container, `unicum_data`, based on [busybox](https://registry.hub.docker.com/_/busybox/), 
 2. a redis container, `unicum_redis`, based on [dockerfile/redis](https://registry.hub.docker.com/u/dockerfile/redis/)
-3. the Unicum container, `unicum`, based on [sullof/unicum](https://registry.hub.docker.com/u/sullof/unicum/), listening on the post `9691`
+3. the Unicum container, `unicum`, based on [hooq/unicum](https://registry.hub.docker.com/u/hooq/unicum/), listening on the post `9691`
 
-The image sullof/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
+The image hooq/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
 
-    docker build -t your_name/unicum .
+    docker build -t <your_docker_username>/unicum .
 
 
 

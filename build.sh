@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t sullof/unicum .
+docker build -t hooq/unicum .
