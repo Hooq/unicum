@@ -9,9 +9,9 @@
 # Alternatively, you can backup the data container,
 # for example with https://github.com/discordianfish/docker-backup
 
-ID=$(docker inspect --format '{{ .Id }}' unicum_data 2> /dev/null)
+ID=$(sudo docker inspect --format '{{ .Id }}' unicum_data 2> /dev/null)
 if [ -z "$ID" ]; then
-docker run \
+sudo docker run \
     --name unicum_data \
     -v /data \
     -v /log \
@@ -25,7 +25,7 @@ fi
 
 # RUNNING THE REDIS CONTAINER
 
-ID=$(docker inspect --format '{{ .Id }}' unicum_redis 2> /dev/null)
+ID=$(sudo docker inspect --format '{{ .Id }}' unicum_redis 2> /dev/null)
 if [ ! -z "$ID" ]; then
     docker stop unicum_redis
     docker rm unicum_redis
@@ -35,7 +35,7 @@ fi
 #   -p 6379:6379
 # and set a password uncommenting the requirepass command
 
-docker run -d \
+sudo docker run -d \
     --volumes-from unicum_data \
     --name unicum_redis \
     dockerfile/redis \
@@ -44,27 +44,18 @@ docker run -d \
 
 # RUNNING THE UNICUM CONTAINER
 
-ID=$(docker inspect --format '{{ .Id }}' unicum 2> /dev/null)
+ID=$(sudo docker inspect --format '{{ .Id }}' unicum 2> /dev/null)
 if [ ! -z "$ID" ]; then
     docker stop unicum
     docker rm unicum
 fi
 
-if [ ! -z "$1" ]; then
-    docker run -ti \
-        -p 6961:6961 \
-        --name unicum \
-        --link unicum_redis:unicum_redis \
-        --volumes-from unicum_data \
-        sullof/unicum bash start.sh
-else
-    docker run -d \
-        -p 6961:6961 \
-        --name unicum \
-        --link unicum_redis:unicum_redis \
-        --volumes-from unicum_data \
-        sullof/unicum
-fi
+sudo docker run -d \
+    -p 6961:6961 \
+    --name unicum \
+    --link unicum_redis:unicum_redis \
+    --volumes-from unicum_data \
+    sullof/unicum
 
 # If you are using a password for redis, you have to communicate this to the unicum server
 # in the variable $PASSWORD. For example you can do this adding the line

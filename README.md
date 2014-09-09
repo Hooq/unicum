@@ -169,7 +169,18 @@ Forces the reconfiguration of the server. To reduce the risk, you need to use a 
 run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
 
     docker run -ti --volumes-from unicum_data busybox cat /log/unicum.log
-													
+				
+																						
+## Checking the database
+																						
+You can check the database running a second Redis container with the script `run_redis_cli.sh` or executing
+																						
+    sudo docker run -ti \
+        --name redis_cli \
+        --link unicum_redis:unicum_redis \
+        dockerfile/redis \
+        bash -c 'redis-cli -h "$UNICUM_REDIS_PORT_6379_TCP_ADDR"'
+																						
 													
 ## Credits
 
