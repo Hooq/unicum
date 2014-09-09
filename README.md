@@ -149,8 +149,7 @@ Return the epoch. For example, in our case:
     												
 #####`/export`
     							
-Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. To avoid this 
-you should backup the unicum_data container using, for example, [Docker-backup](https://github.com/discordianfish/docker-backup)
+Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. 
 
 A tipical response is like the following:
   
@@ -166,6 +165,8 @@ A tipical response is like the following:
             }
         }
     }
+
+In general, when you use pure data containers, you should backup them. Personally, I use [Docker-backup](https://github.com/discordianfish/docker-backup) for this.
 			
 			
 #####`/init?config=<escaped_config_object>`
