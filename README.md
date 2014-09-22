@@ -14,7 +14,7 @@ Unicum is based on Redis and uses integer in base 62 so that, for example, the k
 `2T0QmC` is the difference between the current timestamp in microseconds and the epoch when you initialize the server. 
 Specifically, the microseconds are in the last 4 digit `0QmC` and the seconds from the epoch are the rest `2T`.
 
-`rM` is a variance on the single shard, managed with a sequence.
+`rM` is a variance for the specific type, managed with a sequence.
 
 `03` is the key type.
 
