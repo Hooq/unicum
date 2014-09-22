@@ -35,10 +35,10 @@ This way you key is a *talking key* that contains info about what it is and when
 You can use unicum.js in a Node application, as a library, or, preferably, starting the Unicum server. This is
 based on Docker and can be downloaded and ran in a minute or less.
 
-To start the server you can run the shell script `run.sh`. You can do it cloning this repository, or 
-executing the `run.sh` file directly from GitHub:
+To install the server, Docker has to be installed on your server. If not, look at [http://docs.docker.com/installation/](http://docs.docker.com/installation/). To start the server, you can run the shell script `run.sh`, cloning this repository, or executing the `run.sh` file directly from GitHub:
                                                                                                      
-    curl -sSL https://github.com/Hooq/unicum/blob/master/run.sh | sudo sh
+    curl -sSL https://raw.githubusercontent.com/Hooq/unicum/master/run.sh | sudo sh
+
 
 It will create 
 
@@ -47,13 +47,21 @@ It will create
 3. the Unicum container, `unicum`, based on [hooq/unicum](https://registry.hub.docker.com/u/hooq/unicum/), listening on the post `9691`
 
 The image hooq/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
-
     docker build -t <your_docker_username>/unicum .
+
+To see the IP address of the Unicum server, you can execute
+
+    docker inspect --format '{{ .NetworkSettings.IPAddress }}' unicum
+
+If you call the Unicum server from inside other containers, the best way to connect them is to use a link. For example:
+
+    docker run -d --link unicum:unicum dockerfile/python
 
 
 
 ## The API
 
+### Generate
 
 #####`/generate/:type`
 
@@ -66,6 +74,7 @@ Generates a key of type `type`. For example `/generate/avatar` returns
         "type": "avatar"
     }
 
+### Convert
 
 #####`/convert/:existent_key/:new_type`
 	
@@ -77,7 +86,8 @@ Generates 1 derivated key of type `new_type` from `existent_key`. For example `/
         "key": "P7u1Xcq0205",
         "type": "user"
     }
-	
+
+### Info	
 	
 #####`/info/:key`
    
@@ -91,6 +101,7 @@ Returns info about a key. For example `/info/P7u1Xcq0205` returns
         "date": "2014-11-16T07:27:15:14Z"
     }
     
+### Time  
     
 #####`/time/:key`
     
@@ -103,6 +114,7 @@ Returns the timestamp in milliseconds of the key. For example `/time/P7u1Xcq0205
         "time": 1416122835014
     }
 	
+### Date	
 	
 #####`/date/:key`
 
@@ -115,6 +127,7 @@ Returns the date of the key in ISO format. For example `/date/P7u1Xcq0205` retur
         "date": "2014-11-16T07:27:15:14Z"
     }
 	
+### Fulltime
 	
 #####`/fulltime/:key`
 	
@@ -128,6 +141,7 @@ Returns the time in seconds and microseconds of the key. For example `/fulltime/
         "micros": 8014120
     }
     
+### Epoch
     
 #####`/epoch`    
 	
@@ -138,12 +152,12 @@ Return the epoch. For example, in our case:
         "code": 200,
         "epoch": 1410134246
     }	
-    		
+    	
+### Export
     												
 #####`/export`
     							
-Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. To avoid this 
-you should backup the unicum_data container using, for example, [Docker-backup](https://github.com/discordianfish/docker-backup)
+Returns a config object that can be used to restore the data in case you loose, for some reason, the Redis data. 
 
 A tipical response is like the following:
   
@@ -159,12 +173,16 @@ A tipical response is like the following:
             }
         }
     }
+
+In general, when you use pure data containers, you should backup them. Personally, I use [Docker-backup](https://github.com/discordianfish/docker-backup) for this.
 			
+### Init
 			
 #####`/init?config=<escaped_config_object>`
 													
 Initialize with existent data a new Unicum server. This action will fail if the server is already configured.
 
+### Restore
 
 #####`/restore/:secret?config=<escaped_config_object>`
 
