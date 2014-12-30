@@ -61,6 +61,10 @@ If you call the Unicum server from inside other containers, the best way to conn
 
 ## The API
 
+To call the api, you just need to call the Unicum server, on the port 6961, with a call like this:
+
+`http://172.17.0.45:6961`
+
 ### Generate
 
 #####`/generate/:type`
