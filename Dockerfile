@@ -1,4 +1,4 @@
-FROM node:0.10.30
+FROM node:0.10.40
 
 ADD app /usr/src/app
 WORKDIR /usr/src/app

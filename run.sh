@@ -35,11 +35,12 @@ fi
 #   -p 6379:6379
 # and set a password uncommenting the requirepass command
 
-sudo docker run -d \
+sudo docker run \
     --volumes-from unicum_data \
     --name unicum_redis \
-    dockerfile/redis \
-    redis-server /etc/redis/redis.conf \
+    -d \
+    redis \
+    redis-server \
     --appendonly yes #--requirepass <password>
 
 # RUNNING THE UNICUM CONTAINER
