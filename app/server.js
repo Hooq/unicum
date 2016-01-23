@@ -135,7 +135,7 @@ app.get('/', function (req, res) {
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+    var err = new Error('API not Found');
     err.status = 404;
     next(err);
 });
@@ -149,10 +149,10 @@ global.errout = function (err, req, res) {
             message: err.message
         }
     };
-    if (app.get('env') === 'development' && ret.error.code != 404) {
-        console.error(err);
-        ret.error.err = err;
-    }
+    //if (app.get('env') === 'development' && ret.error.code != 404) {
+    //    console.error(err);
+    //    ret.error.err = err;
+    //}
     res.json(ret);
 }
 
