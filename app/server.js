@@ -142,30 +142,18 @@ app.use(function (req, res, next) {
     });
 });
 
-//global.errout = function (err, req, res) {
-//    res.status(err.status || 500);
-//    var ret = {
-//        success: false,
-//        error: {
-//            code: err.status || 500,
-//            message: err.message
-//        }
-//    };
-//    //if (app.get('env') === 'development' && ret.error.code != 404) {
-//    //    console.error(err);
-//    //    ret.error.err = err;
-//    //}
-//    res.json(ret);
-//}
-//
-//app.use(errout);
-////
-//app.get('*', function (req, res) {
-//    res.json({
-//        success: false,
-//        code: 404,
-//        message: 'Wrong api call.'
-//    });
-//});
+global.errout = function (err, req, res) {
+    res.status(err.status || 500);
+    var ret = {
+        success: false,
+        error: {
+            code: err.status || 500,
+            message: err.message
+        }
+    };
+    res.json(ret);
+}
+
+app.use(errout);
 
 app.listen(6961);
