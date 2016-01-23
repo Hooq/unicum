@@ -134,32 +134,38 @@ app.get('/', function (req, res) {
 
 
 /// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('API not Found');
-    err.status = 404;
-    next(err);
+app.use(function (req, res, next) {
+    res.json({
+        success: false,
+        code: 404,
+        message: 'Wrong api call.'
+    });
 });
 
-global.errout = function (err, req, res) {
-    res.status(err.status || 500);
-    var ret = {
-        success: false,
-        error: {
-            code: err.status || 500,
-            message: err.message
-        }
-    };
-    //if (app.get('env') === 'development' && ret.error.code != 404) {
-    //    console.error(err);
-    //    ret.error.err = err;
-    //}
-    res.json(ret);
-}
-
-app.use(errout);
+//global.errout = function (err, req, res) {
+//    res.status(err.status || 500);
+//    var ret = {
+//        success: false,
+//        error: {
+//            code: err.status || 500,
+//            message: err.message
+//        }
+//    };
+//    //if (app.get('env') === 'development' && ret.error.code != 404) {
+//    //    console.error(err);
+//    //    ret.error.err = err;
+//    //}
+//    res.json(ret);
+//}
 //
+//app.use(errout);
+////
 //app.get('*', function (req, res) {
-//    res.json({success: false, code: 404, message: 'Wrong api call.'});
+//    res.json({
+//        success: false,
+//        code: 404,
+//        message: 'Wrong api call.'
+//    });
 //});
 
 app.listen(6961);
