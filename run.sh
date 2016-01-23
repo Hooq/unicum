@@ -54,6 +54,7 @@ fi
 sudo docker run -d \
     --name unicum \
     --link unicum_redis:unicum_redis \
+    -p 6961:6961 \
     --volumes-from unicum_data \
     hooq/unicum
 
