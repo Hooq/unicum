@@ -61,9 +61,9 @@ If you call the Unicum server from inside other containers, the best way to conn
 
 ## The API
 
-To call the api, you just need to call the Unicum server, on the port 6961, with a call like this:
+To call the api, you just need to call the Unicum server which exposes the port 6961 on localhost:
 
-    http://172.17.0.45:6961/<api>
+    http://localhost:6961/<api>
 
 
 ### Generate
@@ -79,20 +79,7 @@ Generates a key of type `type`. For example `/generate/avatar` returns
         "type": "avatar"
     }
 
-### Convert
-
-#####`/convert/:existent_key/:new_type`
-	
-Generates 1 derivated key of type `new_type` from `existent_key`. For example `/convert/P7u1Xcq0204/user` returns
-	
-	{
-        "success": true,
-        "code": 200,
-        "key": "P7u1Xcq0205",
-        "type": "user"
-    }
-
-### Info	
+### Info
 	
 #####`/info/:key`
    
