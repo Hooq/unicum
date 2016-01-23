@@ -1,12 +1,25 @@
 {
-    "name": "Unicum",
-    "version": "0.1.0",
-    "engines": {
-        "node": ">= 0.10"
-    },
-    "dependencies": {
-        "express": "~4.2.0",
-        "redis": "*"
-    },
-    "main": "./server.js"
+  "name": "Unicum",
+  "description": "A restful server for unique id generation",
+  "homepage": "https://github.com/hooq/unicum",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hooq/unicum.git"
+  },
+  "license": "MIT",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "dependencies": {
+    "express": "~4.2.0",
+    "redis": "*"
+  },
+  "maintainers": [
+    {
+      "name": "Francesco Sullo",
+      "email": "fs@hooq.co"
+    }
+  ],
+  "main": "./server.js"
 }
