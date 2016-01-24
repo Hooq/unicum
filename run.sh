@@ -31,9 +31,10 @@ if [ ! -z "$ID" ]; then
     docker rm unicum_redis
 fi
 
+
 # If you want to allow the access not only locally, you would set the port like
-#   -p 6379:6379
-# and set a password uncommenting the requirepass command
+#   -p 63791:6379
+# If you like to set a password uncomment the requirepass command
 
 sudo docker run \
     --volumes-from unicum_data \
@@ -42,6 +43,7 @@ sudo docker run \
     redis \
     redis-server \
     --appendonly yes #--requirepass <password>
+
 
 # RUNNING THE UNICUM CONTAINER
 
@@ -54,6 +56,7 @@ fi
 sudo docker run -d \
     --name unicum \
     --link unicum_redis:unicum_redis \
+    -p 6961:6961 \
     --volumes-from unicum_data \
     hooq/unicum
 

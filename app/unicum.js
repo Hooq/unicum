@@ -154,20 +154,6 @@ function Unicum() {
         return decode(key, true);
     };
 
-    function convert(key, newType, cb) {
-        if (!key)
-            cb({status: 403});
-        else {
-            var newval = codes[newType];
-            if (!isNumber(newval))
-                create(newType, function (err, newval) {
-                    if (err) cb(err);
-                    else convert(key, newType, cb);
-                });
-            else cb(null, key.substring(0, key.length - 2) + toInt62(newval, 2));
-        }
-    };
-
     function getTime(key, isoFormat) {
         var k = decode(key);
         if (k.ts) {
@@ -269,8 +255,6 @@ function Unicum() {
             });
         }
     };
-
-    this.convert = convert;
 
     this.getType = getType;
 

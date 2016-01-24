@@ -43,15 +43,11 @@ To install the server, Docker has to be installed on your server. If not, look a
 It will create 
 
 1. a data container, `unicum_data`, based on [busybox](https://registry.hub.docker.com/_/busybox/), 
-2. a redis container, `unicum_redis`, based on [dockerfile/redis](https://registry.hub.docker.com/u/dockerfile/redis/)
+2. a redis container, `unicum_redis`, based on [redis](https://registry.hub.docker.com/_/redis/)
 3. the Unicum container, `unicum`, based on [hooq/unicum](https://registry.hub.docker.com/u/hooq/unicum/), listening on the post `9691`
 
 The image hooq/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
     docker build -t <your_docker_username>/unicum .
-
-To see the IP address of the Unicum server, you can execute
-
-    docker inspect --format '{{ .NetworkSettings.IPAddress }}' unicum
 
 If you call the Unicum server from inside other containers, the best way to connect them is to use a link. For example:
 
@@ -61,10 +57,11 @@ If you call the Unicum server from inside other containers, the best way to conn
 
 ## The API
 
-To call the api, you just need to call the Unicum server, on the port 6961, with a call like this:
+To call the api, you just need to call the Unicum server which exposes the port 6961 on localhost:
 
-    http://172.17.0.45:6961/<api>
+    http://localhost:6961/<api>
 
+If you need to use a different port number, just modify the `run.sh` file and run it again.
 
 ### Generate
 
@@ -79,20 +76,7 @@ Generates a key of type `type`. For example `/generate/avatar` returns
         "type": "avatar"
     }
 
-### Convert
-
-#####`/convert/:existent_key/:new_type`
-	
-Generates 1 derivated key of type `new_type` from `existent_key`. For example `/convert/P7u1Xcq0204/user` returns
-	
-	{
-        "success": true,
-        "code": 200,
-        "key": "P7u1Xcq0205",
-        "type": "user"
-    }
-
-### Info	
+### Info
 	
 #####`/info/:key`
    
@@ -195,7 +179,16 @@ Forces the reconfiguration of the server. To reduce the risk, you need to use a 
 run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
 
     docker run -ti --volumes-from unicum_data busybox cat /log/unicum.log
-				
+
+### Wrong API
+
+If you call a wrong API the response will be:
+
+    {
+        "success": false,
+        "code": 404,
+        "message": "Wrong api call."
+    }
 																						
 ## Checking the database
 																						
