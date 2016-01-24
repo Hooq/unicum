@@ -23,17 +23,14 @@ Specifically, the microseconds are in the last 4 digit `0QmC` and the seconds fr
 
 Unicum uses Redis to generate the keys. First off, when you start the server for the first time, it takes the current timestamp and set the epoch (in seconds, like a Linux timestamp).
 
-In the following, when you generate a key, Unicum read the time in Redis and use the difference in seconds between the 
-current time and the epoch, and the microseconds in the following 4 digit. It uses this as the first part of the key, adding a
-variant (to avoid keys in the same microseconds -- despite this is very unlikely) and 2 digit for the key type. 
+In the following, when you generate a key, Unicum read the time in Redis and use the difference in seconds between the current time and the epoch, and the microseconds in the following 4 digit. It uses this as the first part of the key, adding a variant (to avoid keys in the same microseconds -- despite this is very unlikely) and 2 digit for the key type. 
 
 This way you key is a *talking key* that contains info about what it is and when it has been generated.
 
 
 ## Usage
 
-You can use unicum.js in a Node application, as a library, or, preferably, starting the Unicum server. This is
-based on Docker and can be downloaded and ran in a minute or less.
+You can use unicum.js in a Node application, as a library, or, preferably, starting the Unicum server. This is based on Docker and can be downloaded and ran in a minute or less.
 
 To install the server, Docker has to be installed on your server. If not, look at [http://docs.docker.com/installation/](http://docs.docker.com/installation/). To start the server, you can run the shell script `run.sh`, cloning this repository, or executing the `run.sh` file directly from GitHub:
                                                                                                      
@@ -175,8 +172,7 @@ Initialize with existent data a new Unicum server. This action will fail if the 
 
 #####`/restore/:secret?config=<escaped_config_object>`
 
-Forces the reconfiguration of the server. To reduce the risk, you need to use a secret that will be generated the first time you
-run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
+Forces the reconfiguration of the server. To reduce the risk, you need to use a secret that will be generated the first time you run the server. This secret is stored in the /log/unicum.log file. You can see this file running, for example:
 
     docker run -ti --volumes-from unicum_data busybox cat /log/unicum.log
 
@@ -217,21 +213,8 @@ Unicum has been developed by Francesco Sullo <fs@hooq.co>
 
 Copyright (c) 2014 Hooq <os@hooq.co>
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.	
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.	
