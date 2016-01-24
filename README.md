@@ -1,7 +1,7 @@
 Unicum
 =============
 
-A restful server for unique id generation
+A restful server for unique id generation developed on the hashes of [ShardJS](https://github.com/sullof/shardjs).
 
 
 ## The key format
