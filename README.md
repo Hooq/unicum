@@ -43,7 +43,8 @@ It will create
 2. a redis container, `unicum_redis`, based on [redis](https://registry.hub.docker.com/_/redis/)
 3. the Unicum container, `unicum`, based on [hooq/unicum](https://registry.hub.docker.com/u/hooq/unicum/), listening on the post `9691`
 
-The image hooq/unicum, has been built using the Dockerfile in this repository. If you prefer, you can build it with 
+The image `hooq/unicum`, has been built using the Dockerfile in this repository. If you prefer, you can build it with
+
     docker build -t <your_docker_username>/unicum .
 
 If you call the Unicum server from inside other containers, the best way to connect them is to use a link. For example:
